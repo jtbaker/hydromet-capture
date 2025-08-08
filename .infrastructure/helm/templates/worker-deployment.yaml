@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-worker
+  namespace: prefect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prefect-worker
+  template:
+    metadata:
+      labels:
+        app: prefect-worker
+    spec:
+      containers:
+        - name: prefect-worker
+          image: prefecthq/prefect:2-latest-kubernetes
+          env:
+            - name: PREFECT_API_URL
+              value: "http://prefect-server.prefect.svc.cluster.local:4200/api"
+            - name: PREFECT_WORK_POOL_NAME
+              value: "k8s-work-pool"
+          command: ["prefect"]
+          args:
+            ["worker", "start", "-n", "worker1", "-p", "k8s-work-pool"]

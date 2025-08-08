@@ -1,0 +1,3 @@
+server:
+  uiConfig:
+    prefectUiApiUrl: ${PREFECT_API_URL}

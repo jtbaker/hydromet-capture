@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prefect-ingress
+  namespace: prefect
+spec:
+  defaultBackend:
+    service:
+      name: prefect-server
+      port:
+        number: 4200
+  ingressClassName: tailscale
+  rules:
+    - host: prefect # Replace with the desired hostname for your LAN
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prefect-server
+                port:
+                  number: 4200
+  tls:
+    - hosts:
+        - prefect
